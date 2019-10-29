@@ -9,7 +9,7 @@
                     <p class="card-text">{{ post.body|truncate(100, true) }}</p>
                     <div class="d-flex justify-content-between align-items-center">
                         <div class="btn-group">
-                            <a href="#" class="btn btn-sm btn-outline-secondary">Read more</a>
+                            <a href="{{ path('post', {'id': post.id}) }}" class="btn btn-sm btn-outline-secondary">Read more</a>
                         </div>
                         <small class="text-muted">9 likes</small>
                     </div>

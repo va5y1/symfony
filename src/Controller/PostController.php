@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
+use App\Entity\Post;
 
 class PostController extends AbstractController
 {
@@ -12,22 +13,21 @@ class PostController extends AbstractController
      */
     public function index()
     {
-      $posts = [
-        'post1' => [
-          'title' => '1 Заголовок',
-          'body' => 'Тело первого поста'
-        ],
-        'post2' => [
-          'title' => '2 Заголовок',
-          'body' => 'Тело второго постdfgdfgsdfgsdfgsdgdgdfgsggdfgsdfgsdfg sdfg sdf g sd sdf  dfg sdfg sd sdf gfs sdf sdf sdf sdfg  а'
-        ],
-        'post3' => [
-          'title' => '3 Заголовок',
-          'body' => 'Тело третьего поста'
-        ],
-      ];
+      $repository = $this->getDoctrine()->getRepository(Post::class);
+      $posts = $repository->findAll();
       return $this->render('post/index.html.twig', [
             'posts' => $posts
         ]);
     }
+  /**
+   * @param Post $post
+   * @return \Symfony\Component\HttpFoundation\Response
+   * @Route("/post/{id}", name="post")
+   */
+  public function post(Post $post)
+  {
+    return $this->render('post/show.html.twig', [
+      'post' => $post
+    ]);
+  }
 }
