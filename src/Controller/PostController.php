@@ -5,6 +5,8 @@ namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\Post;
+use Symfony\Component\HttpFoundation\Request;
+use App\Form\PostType;
 
 class PostController extends AbstractController
 {
@@ -28,6 +30,27 @@ class PostController extends AbstractController
   {
     return $this->render('post/show.html.twig', [
       'post' => $post
+    ]);
+  }
+  /**
+   * @Route("/create_post", name="create_post")
+   */
+  public function createPost(Request $request)
+  {
+    $post = new Post();
+    $form = $this->createForm(PostType::class, $post);
+    $form->handleRequest($request);
+
+    if ($form->isSubmitted() && $form->isValid()) {
+      $em = $this->getDoctrine()->getManager();
+      $em->persist($post);
+      $em->flush();
+
+      return $this->redirect('/');
+    }
+
+    return $this->render('post/create.html.twig', [
+      'form' => $form->createView()
     ]);
   }
 }
